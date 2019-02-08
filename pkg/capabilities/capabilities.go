@@ -18,6 +18,8 @@ package capabilities
 
 import (
 	"sync"
+
+	"k8s.io/kubernetes/pkg/kubelet/types"
 )
 
 // Capabilities defines the set of capabilities available within the system.
@@ -62,9 +64,16 @@ func Initialize(c Capabilities) {
 
 // Setup the capability set.  It wraps Initialize for improving usability.
 func Setup(allowPrivileged bool, perConnectionBytesPerSec int64) {
+	// Set all sources so node+agent in the same process doesn't get restricted
+	all, _ := types.GetValidatedSources([]string{types.AllSource})
 	Initialize(Capabilities{
 		AllowPrivileged:                        allowPrivileged,
 		PerConnectionBandwidthLimitBytesPerSec: perConnectionBytesPerSec,
+		PrivilegedSources: PrivilegedSources{
+			HostNetworkSources: all,
+			HostPIDSources:     all,
+			HostIPCSources:     all,
+		},
 	})
 }
 
