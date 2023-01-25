@@ -551,7 +551,8 @@ func GetGather() metrics.Gatherer {
 
 // SinceInSeconds gets the time since the specified start in seconds.
 func SinceInSeconds(start time.Time) float64 {
-	return time.Since(start).Seconds()
+	// return time.Since(start).Seconds()
+	return float64(time.Since(start).Milliseconds())
 }
 
 const configMapAPIPathFmt = "/api/v1/namespaces/%s/configmaps/%s"
