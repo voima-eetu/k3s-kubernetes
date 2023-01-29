@@ -305,6 +305,11 @@ func (e *eventBroadcasterImpl) StartStructuredLogging(verbosity klog.Level) watc
 	return e.StartEventWatcher(
 		func(e *v1.Event) {
 			klog.InfoS("===K3S-CUSTOM-999=== New event ", "event", e.Type, "reason", e.Reason)
+			if e.Reason == "Pulled" || e.Reason == "Created" || e.Reason == "SuccessfulCreate" {
+				currentTime := time.Now()
+				klog.InfoS("===K3S-CUSTOM-998=== New event ", "event", e.Type, "reason", e.Reason, "object", klog.KRef(e.InvolvedObject.Namespace, e.InvolvedObject.Name), "time", time.Now().Format(time.RFC3339Nano))
+			}
+
 			klog.V(verbosity).InfoS("Event occurred", "object", klog.KRef(e.InvolvedObject.Namespace, e.InvolvedObject.Name), "fieldPath", e.InvolvedObject.FieldPath, "kind", e.InvolvedObject.Kind, "apiVersion", e.InvolvedObject.APIVersion, "type", e.Type, "reason", e.Reason, "message", e.Message)
 		})
 }
