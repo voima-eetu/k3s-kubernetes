@@ -54,11 +54,11 @@ var (
 EOF
 done
 
-#for i in ./cmd/*/; do
-#    stat $i/*.go >/dev/null 2>&1 || continue
-#    echo Building $i
-#    go build $i
-#done
+for i in ./cmd/*/; do
+   stat $i/*.go >/dev/null 2>&1 || continue
+   echo Building $i
+   go build $i
+done
 
 git add ./pkg/generated/openapi/openapi.go 2>/dev/null || true
 git add $versionFiles

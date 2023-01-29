@@ -108,7 +108,7 @@ func (s *scope) RemoveContainer(containerID string) error {
 	defer s.mutex.Unlock()
 
 	klog.InfoS("RemoveContainer", "containerID", containerID)
-	klog.InfoS("===K3S-CUSTOM-999=== Removing container", "containerID", containerID)
+	// klog.InfoS("===K3S-CUSTOM-999=== Removing container", "containerID", containerID)
 	// Get the podUID and containerName associated with the containerID to be removed and remove it
 	podUIDString, containerName, err := s.podMap.GetContainerRef(containerID)
 	if err != nil {
