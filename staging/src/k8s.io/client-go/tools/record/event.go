@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"strings"
 	"time"
 
 	v1 "k8s.io/api/core/v1"
@@ -305,7 +306,12 @@ func (e *eventBroadcasterImpl) StartStructuredLogging(verbosity klog.Level) watc
 	return e.StartEventWatcher(
 		func(e *v1.Event) {
 			if e.Reason == "Pulled" || e.Reason == "Created" || e.Reason == "Started" || e.Reason == "SuccessfulCreate" {
-				klog.InfoS("===K3S-CUSTOM-998=== New event ", "event", e.Type, "reason", e.Reason, "object", klog.KRef(e.InvolvedObject.Namespace, e.InvolvedObject.Name), "time", time.Now().Format(time.RFC3339Nano))
+				if e.Reason == "SuccessfulCreate" {
+					podName := strings.ReplaceAll(e.Message, "Created pod: ", "")
+					klog.InfoS("===K3S-CUSTOM-998=== New event ", "event", e.Type, "reason", e.Reason, "object", klog.KRef(e.InvolvedObject.Namespace, podName), "time", time.Now().Format(time.RFC3339Nano))
+				} else {
+					klog.InfoS("===K3S-CUSTOM-998=== New event ", "event", e.Type, "reason", e.Reason, "object", klog.KRef(e.InvolvedObject.Namespace, e.InvolvedObject.Name), "time", time.Now().Format(time.RFC3339Nano))
+				}
 			}
 
 			klog.V(verbosity).InfoS("Event occurred", "object", klog.KRef(e.InvolvedObject.Namespace, e.InvolvedObject.Name), "fieldPath", e.InvolvedObject.FieldPath, "kind", e.InvolvedObject.Kind, "apiVersion", e.InvolvedObject.APIVersion, "type", e.Type, "reason", e.Reason, "message", e.Message)
