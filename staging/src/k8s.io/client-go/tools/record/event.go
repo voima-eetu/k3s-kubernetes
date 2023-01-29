@@ -304,9 +304,7 @@ func (e *eventBroadcasterImpl) StartLogging(logf func(format string, args ...int
 func (e *eventBroadcasterImpl) StartStructuredLogging(verbosity klog.Level) watch.Interface {
 	return e.StartEventWatcher(
 		func(e *v1.Event) {
-			klog.InfoS("===K3S-CUSTOM-999=== New event ", "event", e.Type, "reason", e.Reason)
-			if e.Reason == "Pulled" || e.Reason == "Created" || e.Reason == "SuccessfulCreate" {
-				currentTime := time.Now()
+			if e.Reason == "Pulled" || e.Reason == "Created" || e.Reason == "Started" || e.Reason == "SuccessfulCreate" {
 				klog.InfoS("===K3S-CUSTOM-998=== New event ", "event", e.Type, "reason", e.Reason, "object", klog.KRef(e.InvolvedObject.Namespace, e.InvolvedObject.Name), "time", time.Now().Format(time.RFC3339Nano))
 			}
 
