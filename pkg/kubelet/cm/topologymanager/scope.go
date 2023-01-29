@@ -19,7 +19,7 @@ package topologymanager
 import (
 	"sync"
 
-	"k8s.io/api/core/v1"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/klog/v2"
 	"k8s.io/kubernetes/pkg/kubelet/cm/admission"
 	"k8s.io/kubernetes/pkg/kubelet/cm/containermap"
@@ -102,7 +102,7 @@ func (s *scope) AddHintProvider(h HintProvider) {
 func (s *scope) AddContainer(pod *v1.Pod, container *v1.Container, containerID string) {
 	s.mutex.Lock()
 	defer s.mutex.Unlock()
-
+	klog.InfoS("===K3S-CUSTOM-999=== Executing AddContainer for ", "pod", pod.Name, "containerID", containerID)
 	s.podMap.Add(string(pod.UID), container.Name, containerID)
 }
 
@@ -113,6 +113,7 @@ func (s *scope) RemoveContainer(containerID string) error {
 	defer s.mutex.Unlock()
 
 	klog.InfoS("RemoveContainer", "containerID", containerID)
+	klog.InfoS("===K3S-CUSTOM-999=== Removing container", "containerID", containerID)
 	// Get the podUID and containerName associated with the containerID to be removed and remove it
 	podUIDString, containerName, err := s.podMap.GetContainerRef(containerID)
 	if err != nil {
