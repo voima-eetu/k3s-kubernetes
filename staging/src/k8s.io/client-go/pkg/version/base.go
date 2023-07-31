@@ -4,7 +4,7 @@ var (
 	gitMajor = "1"
 	gitMinor = "27"
 	gitVersion   = "v1.27.4-log07"
-	gitCommit    = "40562dc3ce7d276655a4993f95f4d6ce1fc4683b"
+	gitCommit    = "8c7cbdf3f9372fab57851fe85d84e9ed68d6bef0"
 	gitTreeState = "clean"
-	buildDate = "2023-07-31T13:51:26Z"
+	buildDate = "2023-07-31T13:59:23Z"
 )
